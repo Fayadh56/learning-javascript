@@ -1,0 +1,152 @@
+
+Sec 2. lec 6
+
+Syntax Parsers: A program that reads your code and det what it does and if its grammer is valid. 
+
+Lexical Enviroments: Where something sits physically in the code you write. Where you write something is important, in programming languages where lexical enviroments exist. 
+
+Execution Contexr: A wrapper to help manage the code that is running. Which lexical enviroment is currentely running is managed via execution contexts. It can contain things beyond what you've written in your code. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Sec 2. lec 7
+
+Name-Value Pair: A name which maps to a unique value, can be defined more than once, but can only have one value in any given context. 
+
+When we're talking about objects in Javascript, we're talking about name/value pairs. That's all objects in Javascript are at its core. 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 9
+
+The base execution context is your global execution context. It creates a global object, and it creates a special variable called this, (The js engine creates this as your code is wrapped inside an execution context).
+
+In browsers this global object is called the window object, at the global level window and this equal the same thing. 
+
+In JS when you say global, it means not Inside a Function!!
+
+IN JS when you create variables, and functions (and theyre not inside a function ie: global) those variables and functions get attached to the global object.
+
+There's also something called the outer enviroment, but when you're running things at the global level, thats just null. (as you're as outside as you can get). 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 10
+
+THE EXECUTION CONTEXT: CREATION AND 'HOISTING'
+
+Hoisting: -- Setups Memory Space for Variables and Functions (before your code begins to execute, the js engine has alredy set aside memory space for the variables and all the functions you've created, so it all already exists
+in memory. However when it comems to variables its different, (as functions are fully stored in memory) but assignments aren't set until the execution phase, so it puts a place holder called 'undefined'. 
+
+All variables in javascript are initially set to undefined, so its a bad idea to rely on hoisting. 
+So its usually better to avoid making use of hoisting..in lose terms. 
+
+So what you wrote is not exactly what gets executed, the js engine takes the code set ups memory space its going to need for functions, and variables before the execution begins. 
+
+Variables and functions are to some degree available even thou they're writeen later in the code. Is because the execution context is created in two phases, the first phase is the creation phase: and then the execution phase. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Conceptual Aside: JS AND Undefined. 
+
+Sec 2. Lec 11
+
+isn't not defined, and undefined the same thing in js? Nope. 
+
+in js when we see undefined, it's not the word undefined, its a special value that js has, that means the variable hasn't been set. 
+
+Uncaught Reference Error == I don't have it in memory! It was never defined, is what the js engine is saying.. 
+
+NEVER SET a Variable to Undefined, (a = undefined;) even thou its valid js, its a little dangerous. It's better to let undefined mean, the programmer never set the value. It'll help with debugging. Because itll be hard to figure
+out whether you set it, or the js engine set it. 
+
+so let undefined mean, I have never set the value. It's the value variables recieve during the creation phase, the js engine puts in the value undefined, (meaning not set). 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 12:
+
+The EXECUTION CONTEXT: CODE EXECUTION
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 13:
+
+Single Threaded, Synchronous Execution
+
+Single Threaded - One Command at a Time from our perspective as programmers. 
+
+Synchronous: One at a time. Code is executed one line at a time, in the order that it appears. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 14:
+
+FUNCTION INVOCATION, AND EXECUTION CONTEXT. 
+
+Invocation: Running/Calling a function, using parenthesis in JS. 
+
+What happens when you invoke a function in js?
+
+A new execution context is created, and placed on the execution stack. Whichever is on top, is the one that's currentely running. (it;s be created, then executed, just like the global execution context.) if a function
+calles another function inside of it, another execution context is created, and placed on the stack. When b finishes executing, its popped off, and then when a finsihes its popped off. The only remaing one would be the Global Execution
+Context. 
+
+- so everytime a function is called, an execution context is created, the this variable for it is made, and all the variables and functions get set up, then its executed line by line, when done it's popped off the execution stack. 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 15:
+
+VARIABLE ENVIROMENTS, FUNCTIONS, AND CONTEXT. 
+
+Variable Enviroment? Where the variables live, and how they relate to each other in memory. 
+
+so, you can defined a variable multiple times with the same name, as long as it's in a different execution context. 
+
+So scope really matters. 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sec 2. lec 16:
+
+THE SCOPE CHAIN
+
+!Important
+
+Every execution context has a reference to its outer enviroment. (example in b() its the global execution context)
+
+js cares about the lexical enviroment, when it comes to the outer reference that every execution context gets. 
+
+So when you ask for a variable in any execution context, if it cant find it itll look at the outer reference and go look for the variable there. And where the outer reference points is going to be dependant on where the function sits lexically. 
+
+ it will keep going down the scope chain(lexically), looking until it hits the global execution context..
+ 
+ if function b is inside function a, and you try to call function b from the global execution context, itll give an error.. as function b was never added to its variable enviroment as its inside a. "so function b was never added to its execution context"). 
+ 
+ so where something sits physically(lexically) is an easy way to find out where something is sitting on the scope chain. 
+ 
+ ---------------------------------------------------------------------------------------------------------------------------------------------------
+ sec 2. lec 17:
+ Scope, ES6, and let
+ 
+ Scope: where a variable is avaliable in your code
+ 
+ *understanding how things really work, makes you a better developer. As those who learn how things work under the hood solve problems and better.*
+ 
+ ES6 uses let, can be used instead of var in the new es6. 
+ 
+ * Let allows the js engine to use whats called block scoping. so you can declare a variable just like you would with var, but you aren't allowed to use it, until the line of code is run during execution. It's still in memory, but the engine won't allow you to use it. let works like how blockscope works in other programming language, like c++.. 
+ 
+ ---------------------------------------------------------------------------------------------------------------------------------------------------
+ sec 2. lec 18: 
+ What about async callbacks?
+ 
+ Asynchronous: more than one at a time.. but js is synchronous? what?!
+ So since js is synchronous, how does it handle asyncrhonous events??!
+ 
+ there's another list that sits inside the js engine: the event queue, full of notifications of events that are happening. So we can listen for events and handle it. from the queue. The event queue gets looked at by the engine, when the execution stack is empty. 
+ so it isn't really asynchronous, whats happening is the browser is async putting things into the event queue, and when the exec context is empty, then it checks the event queue and the handler is made on the stack.. 
+ 
+ so if events happen, theyre placed on the events queue, and if and only if the execution stack is empty does js look at the event queue, and process events in the order that they occured. (fifo like)
+ so asynchronous events are possible, but outside the engine, the engine then looks and process the events synchronously. 
+
